@@ -7,30 +7,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="game-header">
-            <div class="game-info">
-                <div class="mines-counter">
-                    <span>💣</span>
-                    <span id="mines-count">0</span>
-                </div>
-                <div class="timer">
-                    <span>⏰</span>
-                    <span id="time">0</span>
-                </div>
-            </div>
+    <div id="start-menu" class="start-menu">
+        <div class="start-menu-content">
+            <h2>Modalidad de juego</h2>
             <div class="difficulty-selector">
                 <button class="difficulty-btn" data-difficulty="easy">Fácil</button>
                 <button class="difficulty-btn" data-difficulty="medium">Medio</button>
                 <button class="difficulty-btn" data-difficulty="hard">Difícil</button>
             </div>
-            <button id="new-game-btn" class="new-game-btn">🎮 Nuevo Juego</button>
         </div>
-        <div id="board" class="game-board"></div>
-        <div id="game-message" class="game-message hidden">
-            <p id="message-text"></p>
-            <button id="restart-btn">Jugar de nuevo</button>
-        </div>
+    </div>
+        <div id="game-container" class="game-container hidden">
+            <div class="game-header">
+                <div class="game-info">
+                    <div class="mines-counter">
+                        <span>💣</span>
+                        <span id="mines-count">0</span>
+                    </div>
+                    <div class="timer">
+                        <span>⏰</span>
+                        <span id="time">0</span>
+                    </div>
+                </div>
+
+            </div>
+            <div id="board" class="game-board"></div>
+            <div id="game-message" class="game-message hidden">
+                <p id="message-text"></p>
+                <button id="restart-btn">Jugar de nuevo</button>
+                <button id="menu-btn-end">Volver al menú</button>
+            </div>
     </div>
     <script src="script.js"></script>
 </body>

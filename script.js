@@ -9,15 +9,33 @@ class Minesweeper {
         this.minesLeft = 0;
         this.timer = 0;
         this.timerInterval = null;
+        this.currentDifficulty = 'easy';
 
         this.difficulties = {
             easy: { rows: 8, cols: 8, mines: 10 },
-            medium: { rows: 12, cols: 12, mines: 30 },
-            hard: { rows: 16, cols: 16, mines: 50 }
+            medium: { rows: 16, cols: 16, mines: 40 },
+            hard: { rows: 16, cols: 30, mines: 99 }
         };
 
-        this.initializeGame('easy');
-        this.setupEventListeners();
+        this.setupStartMenu();
+    }
+
+    setupStartMenu() {
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const difficulty = button.dataset.difficulty;
+                document.getElementById('start-menu').classList.add('hidden');
+                document.getElementById('game-container').classList.remove('hidden');
+                document.getElementById('game-message').classList.add('hidden');
+                this.initializeGame(difficulty);
+                this.setupEventListeners();
+            });
+        });
+    }
+
+    getCurrentDifficulty() {
+        return this.currentDifficulty;
     }
 
     initializeGame(difficulty) {
@@ -31,6 +49,7 @@ class Minesweeper {
         this.board = [];
         this.stopTimer();
         this.timer = 0;
+        this.currentDifficulty = difficulty;
         document.getElementById('time').textContent = '0';
         document.getElementById('mines-count').textContent = this.minesLeft;
 
@@ -127,7 +146,7 @@ class Minesweeper {
             cell.innerHTML = '💥';
             cell.classList.add('mine');
             this.revealAllMines();
-            this.showGameMessage('¡Game Over! 😢');
+            this.showGameMessage('Tu puedes princesa');
             this.stopTimer();
             return;
         }
@@ -154,7 +173,7 @@ class Minesweeper {
 
         if (this.checkWin()) {
             this.gameOver = true;
-            this.showGameMessage('¡Felicitaciones! ¡Has ganado! 🎉');
+            this.showGameMessage('Muy bien princesa, ganaste');
             this.stopTimer();
         }
     }
@@ -173,7 +192,7 @@ class Minesweeper {
             this.minesLeft++;
         } else {
             this.board[row][col].isFlagged = true;
-            cell.innerHTML = '🚩';
+            cell.innerHTML = '🍒';
             cell.classList.add('flagged');
             this.minesLeft--;
         }
@@ -186,7 +205,7 @@ class Minesweeper {
             for (let j = 0; j < this.cols; j++) {
                 if (this.board[i][j].isMine) {
                     const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                    cell.innerHTML = '💣';
+                    cell.innerHTML = '🐈‍⬛';
                     cell.classList.add('mine');
                 }
             }
@@ -243,20 +262,16 @@ class Minesweeper {
             }
         });
 
-        document.querySelectorAll('.difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const difficulty = btn.dataset.difficulty;
-                this.initializeGame(difficulty);
-            });
-        });
-
-        document.getElementById('new-game-btn').addEventListener('click', () => {
-            this.initializeGame('easy');
+        document.getElementById('menu-btn-end').addEventListener('click', () => {
+            document.getElementById('game-container').classList.add('hidden');
+            document.getElementById('start-menu').classList.remove('hidden');
+            document.getElementById('game-message').classList.add('hidden');
+            this.stopTimer();
         });
 
         document.getElementById('restart-btn').addEventListener('click', () => {
             document.getElementById('game-message').classList.add('hidden');
-            this.initializeGame('easy');
+            this.initializeGame(this.getCurrentDifficulty());
         });
     }
 }
