@@ -6,11 +6,17 @@
 
 body {
     font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
-    background: linear-gradient(135deg, #ffd6e7, #c9f0ff);
+    background: url('hearts-pattern.svg') repeat, linear-gradient(135deg, #fff0f5, #ffe4e1);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: backgroundFloat 30s linear infinite;
+}
+
+@keyframes backgroundFloat {
+    from { background-position: 0 0; }
+    to { background-position: 100px 100px; }
 }
 
 .start-menu {
@@ -23,7 +29,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ffd6e7, #c9f0ff);
+    background: url('hearts-pattern.svg') repeat, linear-gradient(135deg, #fff0f5, #ffe4e1);
+    animation: backgroundFloat 30s linear infinite;
     z-index: 1000;
 }
 
