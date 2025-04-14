@@ -245,7 +245,12 @@ class Minesweeper {
 
     setupEventListeners() {
         const boardElement = document.getElementById('board');
-        boardElement.addEventListener('click', (e) => {
+        // Remover event listeners existentes
+        const oldBoard = boardElement.cloneNode(true);
+        boardElement.parentNode.replaceChild(oldBoard, boardElement);
+        
+        // Agregar nuevos event listeners
+        oldBoard.addEventListener('click', (e) => {
             if (e.target.classList.contains('cell')) {
                 const row = parseInt(e.target.dataset.row);
                 const col = parseInt(e.target.dataset.col);
@@ -253,7 +258,7 @@ class Minesweeper {
             }
         });
 
-        boardElement.addEventListener('contextmenu', (e) => {
+        oldBoard.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             if (e.target.classList.contains('cell')) {
                 const row = parseInt(e.target.dataset.row);
