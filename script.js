@@ -1,5 +1,5 @@
 class Minesweeper {
-    constructor() {
+    constructor(music) {
         this.board = [];
         this.rows = 0;
         this.cols = 0;
@@ -10,6 +10,7 @@ class Minesweeper {
         this.timer = 0;
         this.timerInterval = null;
         this.currentDifficulty = 'easy';
+        this.backgroundMusic = music;
 
         this.difficulties = {
             easy: { rows: 8, cols: 8, mines: 10 },
@@ -18,6 +19,7 @@ class Minesweeper {
         };
 
         this.setupStartMenu();
+        this.setupVolumeControl();
     }
 
     setupStartMenu() {
@@ -30,6 +32,8 @@ class Minesweeper {
                 document.getElementById('game-message').classList.add('hidden');
                 this.initializeGame(difficulty);
                 this.setupEventListeners();
+                // Iniciar la música cuando el usuario interactúa con la página
+                this.playBackgroundMusic();
             });
         });
     }
@@ -237,10 +241,31 @@ class Minesweeper {
         }
     }
 
+    setupVolumeControl() {
+        // Control de volumen para la música de fondo
+        const volumeControl = document.getElementById('volume-control');
+        if (volumeControl && this.backgroundMusic) {
+            volumeControl.value = this.backgroundMusic.volume;
+            volumeControl.addEventListener('input', (e) => {
+                if (this.backgroundMusic) {
+                    this.backgroundMusic.volume = e.target.value;
+                }
+            });
+        }
+    }
+
     showGameMessage(message) {
         const messageElement = document.getElementById('game-message');
         document.getElementById('message-text').textContent = message;
         messageElement.classList.remove('hidden');
+    }
+
+    playBackgroundMusic() {
+        if (this.backgroundMusic && this.backgroundMusic.paused) {
+            this.backgroundMusic.play().catch(error => {
+                console.log('Error al reproducir música de fondo:', error);
+            });
+        }
     }
 
     setupEventListeners() {
@@ -278,10 +303,28 @@ class Minesweeper {
             document.getElementById('game-message').classList.add('hidden');
             this.initializeGame(this.getCurrentDifficulty());
         });
+        
+        // Control de volumen para la música de fondo
+        const volumeControl = document.getElementById('volume-control');
+        if (volumeControl) {
+            volumeControl.addEventListener('input', (e) => {
+                if (this.backgroundMusic) {
+                    this.backgroundMusic.volume = e.target.value;
+                }
+            });
+        }
     }
 }
 
-// Iniciar el juego cuando se carga la página
+// Iniciar el juego y preparar la música cuando se carga la página
+let backgroundMusic;
+
 window.addEventListener('DOMContentLoaded', () => {
-    new Minesweeper();
+    // Preparar la música de fondo al cargar la página
+    backgroundMusic = new Audio('assets/mixkit-im-so-in-love-with-you-958.mp3');
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = 0.5;
+    
+    // Iniciar el juego
+    new Minesweeper(backgroundMusic);
 });
